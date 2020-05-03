@@ -1,0 +1,7 @@
+{
+	"name": "ee.sumzary.yt2p",
+	"description": "YouTube 2 Player Native Application",
+	"path": null,
+	"type": "stdio",
+	"allowed_origins": ["chrome-extension://NYI/"]
+}
