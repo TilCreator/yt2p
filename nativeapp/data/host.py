@@ -6,6 +6,7 @@ import sys
 import time
 import json
 import struct
+import select
 
 
 def getMessage():
@@ -31,15 +32,16 @@ def sendMessage(encodedMessage):
 
 start_time = time.time()
 while True:
-    receivedMessage = getMessage()
-    if receivedMessage == "ping":
-        sendMessage(encodeMessage("pong3"))
-    if 'command' in receivedMessage.keys():
-        sendMessage(encodeMessage(True))
-        os.system(receivedMessage['command'] + ' &')
-        break
+    if select.select([sys.stdin, ], [], [], 0.0)[0]:
+        receivedMessage = getMessage()
+        if receivedMessage == "ping":
+            sendMessage(encodeMessage("pong3"))
+        if 'command' in receivedMessage.keys():
+            sendMessage(encodeMessage(True))
+            os.system(receivedMessage['command'] + ' &')
+            break
 
-    if time.time() - start_time > 20:
+    if time.time() - start_time > 1:
         break
 
     time.sleep(0.01)
